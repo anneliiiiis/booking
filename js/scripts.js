@@ -9,3 +9,7 @@ $('#mySchedule').weekly_schedule({
 
 
 });
+
+$(function () {
+    $('#datetimepicker1').datetimepicker();
+});

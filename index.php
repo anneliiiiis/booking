@@ -3,7 +3,9 @@ session_start();
 if(!isset($_SESSION['username'])){
    header("Location:login.php");
 }
+
 include 'phpscript.php';
+
 ?>
 	<?php include 'head.php';?>
 
@@ -23,11 +25,14 @@ include 'phpscript.php';
 					<div class="btn-group" role="work-group">
 						<button type="button" class="btn btn-success" id="secondWorker">Merily</button>
 					</div>
-
 				</div>
+				<?php displayDBinfo(); ?>
 			</div>
 			<div class="col-md-12" id="mySchedule">
 			</div>
 
 		</body>
+
 		<script src="js/scripts.js"></script>
+
+<?php mysqli_close($conn); ?>
