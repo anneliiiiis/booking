@@ -1,13 +1,15 @@
 (function ($) {
 	$.fn.weekly_schedule = function (callerSettings) {
-
+		
 		var settings = $.extend({
 			days: ["Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev", "Pühapäev"], // Days displayed
+			dates : ["2017-04-17","2017-04-18","2017-04-18","2017-04-18","2017-04-18","2017-04-18","2017-04-18"],
 			hours: "7:00AM-10:00PM", // Hours displye
 			fontColor: "black", // Font colot used in the component
 			headerBackgroundColor: "transparent", // Background color of headers
 			onSelected: function () {}, // handler called after selection
-			onRemoved: function () {} // handler called after removal
+			onRemoved: function () {}, // handler called after removal
+
 		}, callerSettings || {});
 
 		settings.hoursParsed = parseHours(settings.hours);
@@ -16,8 +18,6 @@
 		var mousedown = false;
 		var devarionMode = false;
 		var schedule = this;
-
-
 
 		if (typeof callerSettings == 'string') {
 			switch (callerSettings) {
@@ -32,7 +32,7 @@
 		else {
 			var days = settings.days; // option
 			var hours = settings.hoursParsed; // option
-
+			var dates = settings.dates;
 			$(schedule).addClass('schedule');
 
 			/*
@@ -53,9 +53,9 @@
 			// Insert header items
 			for (var i = 0; i < days.length; ++i) {
 				var day_header = $('<div></div>', {
-					class: "header-item " + days[i] + "-header"
+					class: "header-item " + days[i] + "-header "+ dates[i]
 				});
-				var header_title = $('<h3>' + capitalize(days[i]) + '</h3>')
+				var header_title = $('<h4>' + capitalize(days[i]) + "<br>" + dates[i] + '</h4>')
 
 				day_header.append(header_title);
 				dayHeaderContainer.append(day_header);
@@ -120,7 +120,7 @@
 			});
 
 			$('.header').css({
-				height: "30px",
+				height: "50px",
 				width: "100%",
 				background: settings.headerBackgroundColor,
 				marginBottom: "5px",
@@ -238,13 +238,13 @@
 			});
 
 			function selectionEvent(hover, selected, disabled, hoverColor, selectedColor) {
-			  	console.log(schedule);
-			  
+				console.log(schedule);
+
 				var event = $("<style type='text/css' scoped> ." + hover + " { background: " + hoverColor +
 					" !important;} ." + selected + " { background: " + selectedColor + " !important; } ." + disabled + " { pointer-events: none !important; opacity: 0.3 !important; box-shadow: none !important; }</style>");
 				event.appendTo(schedule);
-			  
-			  	console.log(schedule);
+
+				console.log(schedule);
 
 				$('.hour').on('mouseenter', function () {
 					if (!mousedown) {
