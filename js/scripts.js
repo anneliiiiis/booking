@@ -1,5 +1,11 @@
-var dates = [];
+
+
 $("#generateWeek").click(function () {
+	
+	
+	
+	$( "#mySchedule" ).empty();
+	var dates = [];
 	var thisDate = $("#schedule_date").val();
 	var date = $("#schedule_date").val();
 	var weekday = ["Pühapäev", "Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev"];
@@ -113,21 +119,22 @@ $("#generateWeek").click(function () {
 		
 	}
 
-	alert(dates);
-
-});
-
-
-
-$('#mySchedule').weekly_schedule({
+	
+	$('#mySchedule').weekly_schedule({
 	// Days displayed
 	days: ["Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev", "Pühapäev"],
-	dates: ["2017-04-17", "2017-04-18", "2017-04-19", "2017-04-20", "2017-04-21", "2017-04-22", "2017-04-23"],
+	dates: dates,
 	// Hours displyed
 	hours: "7:00-20:00"
 
 
 });
+	
+});
+
+
+
+
 
 $('.datepicker').datepicker({
 	format: 'yyyy-mm-dd',
