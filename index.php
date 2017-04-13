@@ -39,7 +39,7 @@ include 'phpscript.php';
 			
 			<div class="col-md-12" id="mySchedule">
 			</div>
-
+			
 		</body>
 
 		<script src="js/scripts.js"></script>

@@ -11,6 +11,7 @@
 	<script src="js/jquery.weekly-schedule-plugin.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/moment.js"></script>
 
        
 </head>

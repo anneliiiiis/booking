@@ -3,7 +3,7 @@
 		
 		var settings = $.extend({
 			days: ["Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev", "Pühapäev"], // Days displayed
-			dates : ["2017-04-17","2017-04-18","2017-04-18","2017-04-18","2017-04-18","2017-04-18","2017-04-18"],
+			
 			hours: "7:00AM-10:00PM", // Hours displye
 			fontColor: "black", // Font colot used in the component
 			headerBackgroundColor: "transparent", // Background color of headers
@@ -33,6 +33,7 @@
 			var days = settings.days; // option
 			var hours = settings.hoursParsed; // option
 			var dates = settings.dates;
+			var datesForClass = settings.datesForClass;
 			$(schedule).addClass('schedule');
 
 			/*
@@ -53,7 +54,7 @@
 			// Insert header items
 			for (var i = 0; i < days.length; ++i) {
 				var day_header = $('<div></div>', {
-					class: "header-item " + days[i] + "-header "+ dates[i]
+					class: "header-item " + days[i] + "-header "+ datesForClass[i]
 				});
 				var header_title = $('<h4>' + capitalize(days[i]) + "<br>" + dates[i] + '</h4>')
 
@@ -87,12 +88,12 @@
 
 			for (var i = 0; i < days.length; i++) {
 				var day = $('<div></div>', {
-					class: "day " + days[i]
+					class: "day " + days[i] + " " + datesForClass[i]
 				});
 
 				for (var j = 0; j < hours.length; j++) {
 					var hour = $('<div></div>', {
-						class: "hour " + hours[j]
+						class: "hour " + hours[j] + " " + datesForClass[i]
 					});
 
 					day.append(hour);
