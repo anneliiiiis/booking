@@ -36,7 +36,7 @@ include 'phpscript.php';
 				</div>
 				<button type="button" class="btn btn-primary" id="generateWeek">OK</button>
 			</div>
-			<p id="postdata"></p>
+			<div id="postdata"></div>
 			<div class="col-md-12" id="mySchedule">
 			</div>
 			

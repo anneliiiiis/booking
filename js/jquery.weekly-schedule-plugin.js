@@ -4,7 +4,7 @@
 		var settings = $.extend({
 			days: ["Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev", "Pühapäev"], // Days displayed
 			
-			hours: "7:00AM-10:00PM", // Hours displye
+			hours: "07:00AM-10:00PM", // Hours displye
 			fontColor: "black", // Font colot used in the component
 			headerBackgroundColor: "transparent", // Background color of headers
 			onSelected: function () {}, // handler called after selection

@@ -36,23 +36,24 @@ $("#generateWeek").click(function () {
 	var datesForClass = [monISO[0], tueISO[0], wenISO[0], thuISO[0], friISO[0], satISO[0], sunISO[0]];
 	
 	
-
+	
 	$('#mySchedule').weekly_schedule({
 		// Days displayed
 		days: ["Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev", "Pühapäev"],
 		dates: dates,
 		datesForClass: datesForClass,
 		// Hours displyed
-		hours: "7:00-20:00"
-
-
+		hours: "07:00-20:00"
 	});
-	/*for(elem in datesForClass){
-		show(elem);
+
+	$('#mySchedule').ready(function(){
+		for(var i = 0; i < datesForClass.length; i++){
+			console.log(datesForClass[i]);
+		show(datesForClass[i]);
 	
-	}*/
-	
-	show(monISO[0]);
+	}
+	});
+
 	//Siin lisan saadud info õigesse divi
 
 });
@@ -65,26 +66,36 @@ function getDayOfWeek(d, nr) {
 }
 
 function show($date){
-	$.ajax({
+	
+		$.ajax({
 		type: "POST",
 		url: "phpscript.php",
 		data: {action: $date},
 		success: function (response){
+			if (response != ""){
 			response = response.slice(0, -2);
 			var elements = response.split("--");
 			
 			for (var i = 0; i < elements.length; i++) {
-				row = elements[i];
+				var row = elements[i];
 				console.log(row);
-				row.split("|");
+				row = row.split("|");
 				var date = row[0];
-				var idName = '#'+row[1] +date;
-				$(idName).html(row[0]);
+				var time = row[1].slice(0, -3);
+				if (row[1][0]=="0"){
+					time = time.slice(1,9);
+				}
+				var idName = time+date;
+				
+				document.getElementById(idName).innerHTML = row[5] + "<br> "+row[3]+ "<br> "+row[4];
+			}
+
 			}
 			
-			alert(response);
+			
 		}
-	});
+		});
+	
 }
 
 

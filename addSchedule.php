@@ -36,7 +36,7 @@ if(isset($_POST['submit'])){
 				require_once('mySQLcon.php');
 				$query = "INSERT INTO schedule (id,date,startTime,endTime,clientName,info,workType)VALUES(NULL,?,?,?,?,?,?)";
 				mysql_query("SET NAMES utf8");
-				$stmt = mysqli_prepare($conn, $query);
+				$stmt = mysqli_prepare($con, $query);
 				
 					
 				
@@ -46,11 +46,11 @@ if(isset($_POST['submit'])){
 				if($affected_rows ==1){
 					echo'Aeg lisatud!';
 					mysqli_stmt_close($stmt);
-					mysqli_close($conn);
+					mysqli_close($con);
 				}else{
 					echo'Aega ei lisatud. Proovi uuesti';
 					mysqli_stmt_close($stmt);
-					mysqli_close($conn);
+					mysqli_close($con);
 				}
 			}else{
 				echo 'Täida kõik väljad!';
