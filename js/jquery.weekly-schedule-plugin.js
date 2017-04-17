@@ -93,7 +93,9 @@
 
 				for (var j = 0; j < hours.length; j++) {
 					var hour = $('<div></div>', {
-						class: "hour " + hours[j] + " " + datesForClass[i]
+						class: "hour " + hours[j] + " " + datesForClass[i],
+						id:  hours[j]+datesForClass[i]
+					
 					});
 
 					day.append(hour);

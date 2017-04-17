@@ -34,10 +34,10 @@ $("#generateWeek").click(function () {
 
 	var dates = [mon, tue, wen, thu, fri, sat, sun];
 	var datesForClass = [monISO[0], tueISO[0], wenISO[0], thuISO[0], friISO[0], satISO[0], sunISO[0]];
-
+	
 	
 
-	/*$('#mySchedule').weekly_schedule({
+	$('#mySchedule').weekly_schedule({
 		// Days displayed
 		days: ["Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev", "Pühapäev"],
 		dates: dates,
@@ -46,9 +46,13 @@ $("#generateWeek").click(function () {
 		hours: "7:00-20:00"
 
 
-	});*/
+	});
+	/*for(elem in datesForClass){
+		show(elem);
 	
+	}*/
 	
+	show(monISO[0]);
 	//Siin lisan saadud info õigesse divi
 
 });
@@ -60,7 +64,28 @@ function getDayOfWeek(d, nr) {
 	return new Date(d.setDate(diff));
 }
 
-
+function show($date){
+	$.ajax({
+		type: "POST",
+		url: "phpscript.php",
+		data: {action: $date},
+		success: function (response){
+			response = response.slice(0, -2);
+			var elements = response.split("--");
+			
+			for (var i = 0; i < elements.length; i++) {
+				row = elements[i];
+				console.log(row);
+				row.split("|");
+				var date = row[0];
+				var idName = '#'+row[1] +date;
+				$(idName).html(row[0]);
+			}
+			
+			alert(response);
+		}
+	});
+}
 
 
 $('.datepicker').datepicker({
