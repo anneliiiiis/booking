@@ -14,7 +14,8 @@ include 'head.php';
 		<?php include 'addSchedule.php';?>
 		<?php include 'workScheduleButtons.php'; ?>
 	</div>
-	<div class="col-md-6">
+			
+	<div class="col-md-12 setWeek">
 		<div class="col-md-3">
 			<label class="control-label" for="date">Vali nädal</label>
 		</div>
@@ -26,9 +27,10 @@ include 'head.php';
 		</div>
 		<div class="col-md-4">
 			<button type="button" class="btn btn-primary" id="generateWeek">OK</button>
+			<button type="button" class="btn btn-primary" id="generateNextWeek">Järgmine nädal</button>
 		</div>
 	</div>
-	<div class="col-md-12" id="mySchedule">
+	<div class="mySchedule" id="mySchedule">
 	</div>
 
 </body>

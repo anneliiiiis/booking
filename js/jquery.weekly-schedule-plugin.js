@@ -6,7 +6,7 @@
 			
 			hours: "07:00AM-10:00PM", // Hours displye
 			fontColor: "black", // Font colot used in the component
-			headerBackgroundColor: "transparent", // Background color of headers
+			headerBackgroundColor: "#fff", // Background color of headers
 			onSelected: function () {}, // handler called after selection
 			onRemoved: function () {}, // handler called after removal
 
@@ -123,15 +123,16 @@
 			});
 
 			$('.header').css({
+				position: "fixed",
+				"z-index": "1",
 				height: "50px",
 				width: "100%",
 				background: settings.headerBackgroundColor,
 				marginBottom: "5px",
-				display: "flex",
-				flexDirection: "row"
+				display: "flex"
 			});
 			$('.align-block').css({
-				width: "100%",
+				width: "40%",
 				height: "100%",
 				background: settings.headerBackgroundColor,
 				margin: "3px"
@@ -162,11 +163,12 @@
 				flexDirection: 'column',
 				margin: '2px', // option
 				marginRight: '1px',
-				background: settings.headerBackgroundColor,
-				width: '100%'
+				background: "#fff",
+				width: '40%'
 			});
 
 			$('.days-wrapper').css({
+				"margin-top":"55px",
 				width: "100%",
 				background: "transparent", //option
 				display: "flex",
@@ -177,7 +179,7 @@
 
 			$('.hour-header-item').css({
 				width: "100%",
-				height: "100px",
+				height: "79px",
 				margin: "1px",
 				border: "none", // option
 				borderColor: "none", // option
@@ -193,7 +195,8 @@
 				fontSize: settings.fontSize,
 				fontWeight: settings.fontWeight,
 				paddingRight: "10%",
-				userSelect: "none"
+				userSelect: "none",
+				"font-size": "20px"
 			});
 
 			$('.day').css({
@@ -208,7 +211,7 @@
 				background: "#dddddd", // option
 				marginBottom: "1px", // option
 				width: "100%",
-				height: "100px",
+				height: "80px",
 				userSelect: "none"
 			});
 
