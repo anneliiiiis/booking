@@ -1,4 +1,6 @@
-<?php
+
+<div class="container addTimeContainer">
+	<?php
 header('Content-Type: text/html; charset=utf-8');
 if(isset($_POST['submit'])){
 			$data_missing = array();
@@ -58,17 +60,17 @@ if(isset($_POST['submit'])){
 			
 		}
 ?>
-	<form class="form-horizontal" method="post">
+	<form class="form-horizontal addTimeForm" method="post">
 		<div class="form-group col-md-12">
 			<label class="control-label col-md-2" for="date">Kuupäev:</label>
 			<div class="input-append date " id="dp3" data-date="" >
-				<input class="span2 datepicker" name="form_date" size="16" type="text" value="">
+				<input class="span2 datepicker2" name="form_date" size="16" id = "datepicker2" type="text" value="">
 				<span class="add-on"><i class="icon-th"></i></span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-md-2">Algusaeg:</label>
-			<select class="form-control col-md-1" name="start_time" id="">
+			<select class="form-control col-md-1 startTime" name="start_time" id="startTime">
 				<option>7:00</option>
 				<option>7:15</option>
 				<option>7:30</option>
@@ -163,5 +165,6 @@ if(isset($_POST['submit'])){
 					<button type="submit" name="submit" class="btn btn-default">Submit</button>
 				</div>
 			</div>
-
+		</div>
 	</form>
+</div>

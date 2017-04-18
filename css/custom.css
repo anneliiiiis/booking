@@ -3,3 +3,23 @@
 .form-control{
 	width: auto;
 }
+.addTimeContainer{
+	display: none;
+	position: fixed;
+    bottom: 0px;
+    left: 0px;
+    padding: 12px;
+    border-radius: 0px;
+    background-color: rgb(157, 216, 106);
+    margin: 10px;
+    color: #222;
+	z-index: 1;
+}
+.workScheduleButtons{
+	display: none;
+	padding: 20px;
+}
+.container{
+	margin-top: 20px;
+}
+

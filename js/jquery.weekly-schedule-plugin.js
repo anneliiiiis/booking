@@ -94,7 +94,7 @@
 				for (var j = 0; j < hours.length; j++) {
 					var hour = $('<div></div>', {
 						class: "hour " + hours[j] + " " + datesForClass[i],
-						id:  hours[j]+datesForClass[i]
+						id:  hours[j]+"|"+datesForClass[i]
 					
 					});
 
@@ -232,6 +232,8 @@
 			/*
 			 * Hook eventlisteners
 			 */
+			
+			
 			$("#firstWorker").click(function () {
 				selectionEvent("hoverFirstWorker", "selectedFirstWorker", "disabledFirstWorker", "#b13535", "#dc5353");
 			});

@@ -1,8 +1,35 @@
+$('document').ready(function(){
+	$(document).ready(function(){
+		$(".addTime").click(function(){
+			$(".workScheduleButtons").slideUp();
+			$(".addTimeContainer").slideToggle();
+			$('.hour').on('mousedown', function () {
+				var idName = $(this).attr('id');
+				var timeAndDateCliced  = idName.split("|");
+				var timeCliced  = timeAndDateCliced[0];
+				var dateCliced = timeAndDateCliced[1];
+				document.getElementById("datepicker2").value = dateCliced;
+				document.getElementById("startTime").value = timeCliced;
+		
+			});
+		});
+	});
+	$(document).ready(function(){
+		$(".addWorkSchedule").click(function(){
+			$(".addTimeContainer").slideUp();
+			$(".workScheduleButtons").slideToggle();
+		});
+	});
+	
+});
+
+
 $("#generateWeek").click(function () {
 
 	$("#mySchedule").empty();
 	var date = $("#schedule_date").val();
 	var a = new Date(date);
+	
 
 	var monISO = getDayOfWeek(a, 1).toISOString().split('T');
 	var monday = monISO[0].split('-');
@@ -48,8 +75,8 @@ $("#generateWeek").click(function () {
 
 	$('#mySchedule').ready(function(){
 		for(var i = 0; i < datesForClass.length; i++){
-			console.log(datesForClass[i]);
-		show(datesForClass[i]);
+			
+			show(datesForClass[i]);
 	
 	}
 	});
@@ -61,45 +88,98 @@ $("#generateWeek").click(function () {
 function getDayOfWeek(d, nr) {
 	d = new Date(d);
 	var day = d.getDay(),
-		diff = d.getDate() - day + (day == 0 ? -6 : nr);
+	diff = d.getDate() - day + (day == 0 ? -6 : nr);
 	return new Date(d.setDate(diff));
 }
 
 function show($date){
 	
-		$.ajax({
+	$.ajax({
 		type: "POST",
 		url: "phpscript.php",
 		data: {action: $date},
 		success: function (response){
-			if (response != ""){
-			response = response.slice(0, -2);
-			var elements = response.split("--");
-			
-			for (var i = 0; i < elements.length; i++) {
-				var row = elements[i];
-				console.log(row);
-				row = row.split("|");
-				var date = row[0];
-				var time = row[1].slice(0, -3);
-				if (row[1][0]=="0"){
-					time = time.slice(1,9);
-				}
-				var idName = time+date;
-				
-				document.getElementById(idName).innerHTML = row[5] + "<br> "+row[3]+ "<br> "+row[4];
-			}
+			if (response != ""){ 
+				response = response.slice(0, -2);
+				var elements = response.split("--");
 
-			}
-			
-			
+				for (var i = 0; i < elements.length; i++) {
+					var row = elements[i];
+					row = row.split("|");
+					var date = row[0];
+					var startTime = row[1].slice(0, -3);
+					var endTime = row[2].slice(0, -3);
+
+					var listOfidNames = getIdNames(startTime, endTime, date);
+					var workType= row[5];
+					for(var j = 0; j < listOfidNames.length; j++){
+						var idName= listOfidNames[j];
+						colorDiv(workType, idName);
+						document.getElementById(idName).innerHTML = row[5] + "<br> "+row[3]+ "<br> "+row[4];
+					}
+					/*for(){
+						
+					}*/
+				}
+			}			
 		}
-		});
+	});
 	
 }
 
+function colorDiv($string, $id){
+	if($string.toLowerCase() == "laser"){
+		document.getElementById($id).style.backgroundColor = "#80fbbc";
+	}else if($string.toLowerCase() == "nõustamine"){
+		document.getElementById($id).style.backgroundColor = "#ff9279";
+	}else if($string.toLowerCase() == "massaž"){
+		document.getElementById($id).style.backgroundColor = "#80eafb";
+	}else if($string.toLowerCase() == "füsioteraapia"){
+		document.getElementById($id).style.backgroundColor = "#ffa7e0";
+	}else if($string.toLowerCase() == "kinesioteipimine"){
+		document.getElementById($id).style.backgroundColor = "#fbf280";
+	}
+	
+}
 
-$('.datepicker').datepicker({
+function getIdNames($startTime, $endTime, $date){
+	var listOfid = [];
+	if($startTime[0]=="0"){
+		$startTime = $startTime.substring(1);
+	}
+	listOfid.push($startTime+"|"+$date);
+	
+	if($endTime[0]=="0"){
+		$endTime = $endTime.substring(1);
+	}
+	
+	var newTime = $endTime;
+
+	
+	while(newTime.localeCompare($startTime) != 0 ){
+		var endTimeList = newTime.split(":");
+		if(endTimeList[1] == "00"){
+			newTime= (+endTimeList[0]- +'1')+":"+"45";
+			listOfid.push(newTime+"|"+$date);
+		}else if(endTimeList[1] == "15"){
+			newTime= endTimeList[0]+":"+"00";
+			listOfid.push(newTime+"|"+$date);
+		}else{
+			newTime= endTimeList[0] + ":"+ (+endTimeList[1]- +'15');
+			listOfid.push(newTime+"|"+$date);
+		}
+	
+	}
+	return listOfid;
+	
+}
+
+$('.datepicker1').datepicker({
 	format: 'yyyy-mm-dd',
 	weekStart: 1
+});
+$('.datepicker2').datepicker({
+	format: 'yyyy-mm-dd',
+	weekStart: 1,
+	position: 'fixed'
 });
