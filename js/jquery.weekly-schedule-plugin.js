@@ -119,7 +119,8 @@
 				width: "100%",
 				display: "flex",
 				flexDirection: "column",
-				justifyContent: "flex-start"
+				justifyContent: "flex-start",
+				    "margin-top": "25px"
 			});
 
 			$('.header').css({
