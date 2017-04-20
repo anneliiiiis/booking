@@ -12,10 +12,10 @@ $('document').ready(function () {
   });*/
   //uue aja lisamise nupp navbaris
   $(".addTime").click(function () {
-    //$(".addSubmittButton").empty();
-    //var $button = $('<button type = "button" class="btn btn-default addNewTime" >Lisa aeg</button>');
-    //$button.appendTo($(".addSubmittButton"));
+    $(".addSubmittButton").empty();
 
+    var $button = $('<button type = "button" class="btn btn-default addNewTime" >Lisa aeg</button>');
+    $button.appendTo($(".addSubmittButton"));
 
     document.getElementById("infoAsText").innerHTML = "vali algusaeg";
     $(".workScheduleButtons").slideUp();
@@ -35,14 +35,15 @@ $('document').ready(function () {
     });
   });
 
-  $(".addNewTime").click(function () {
+  $(document).on('click', '.addNewTime', function () {
+
     var date = document.getElementById("workDate").value;
     var sTime = document.getElementById("startTime").value;
     var eTime = document.getElementById("endTime").value;
     var clName = document.getElementById("clientName").value;
     var info = document.getElementById("otherInfo").value;
     var wType = document.getElementById("workType").value;
-    if (date === "" || clName === "" || sTime === "" || eTime === "" || info === "" || wType === ""  ) {
+    if (date === "" || clName === "" || sTime === "" || eTime === "" || info === "" || wType === "") {
       document.getElementById("infoAsText").innerHTML = "Täida kõik väljad";
     } else {
       var data = date + "|" + sTime;
@@ -59,13 +60,14 @@ $('document').ready(function () {
             var allInfo = date + "|" + sTime + "|" + eTime + "|" + clName + "|" + info + "|" + wType;
             $.ajax({
               type: "POST",
-              url: "updateTime.php",
+              url: "addNewTime.php",
               data: {
                 addTime: allInfo
               },
               success: function (response) {
                 document.getElementById("infoAsText").innerHTML = response;
                 $(".mySchedule").load("index.php");
+                $(".addTimeContainer").slideUp();
               }
             });
 
@@ -75,6 +77,12 @@ $('document').ready(function () {
           }
         }
       });
+      document.getElementById("workDate").value = "";
+      document.getElementById("startTime").value = "";
+      document.getElementById("endTime").value = "";
+      document.getElementById("clientName").value = "";
+      document.getElementById("otherInfo").value = "";
+      document.getElementById("workType").value = "";
 
     }
 
@@ -84,6 +92,11 @@ $('document').ready(function () {
   });
   //aja kustutamine
   $(".deleteTime").click(function () {
+    /* $(".hour").hover(function(){
+        $(this).css("background-color", "yellow");
+        }, function(){
+        $(this).css("background-color", "#dddddd");
+    });*/
     document.getElementById("infoAsText").innerHTML = "Vali aeg, mida soovid kustutada.";
     $(".workScheduleButtons").slideUp();
     $(".addTimeContainer").slideUp();
@@ -97,7 +110,7 @@ $('document').ready(function () {
         },
         success: function (response) {
           document.getElementById("infoAsText").innerHTML = response;
-          $(".mySchedule").load("schedule.php");
+          $(".mySchedule").load("index.php");
         }
       });
 
@@ -105,14 +118,16 @@ $('document').ready(function () {
 
   });
   $(".changeTime").click(function () {
-
-    document.getElementById("infoAsText").innerHTML = "Vali aeg, mida soovid muuta";
     $(".addSubmittButton").empty();
+    document.getElementById("infoAsText").innerHTML = "Vali aeg, mida soovid muuta";
+
     var $button = $('<button class="btn btn-default updateTime" id="updateTime">Muuda aeg</button>');
     $button.appendTo($(".addSubmittButton"));
+
     document.getElementById("infoAsText").innerHTML = "";
     $(".workScheduleButtons").slideUp();
     $(".addTimeContainer").slideDown();
+
     $('.hour').on('mousedown', function () {
       document.getElementById("endTime").value = "";
       document.getElementById("clientName").value = "";
@@ -127,20 +142,34 @@ $('document').ready(function () {
       getAllDataForForm(idName);
     });
   });
+  $(document).on('click', '.updateTime', function () {
+    console.log("click click :)");
 
-  $(".updateTime").click(function () {
-    console.log("muudan aega");
-    var endTime = document.getElementById("endTime");
-    document.getElementById("clientName").value = "";
-    document.getElementById("otherInfo").value = "";
-    document.getElementById("workType").value = "";
-    var idName = $(this).attr('id');
-    var timeAndDateCliced = idName.split("|");
-    var timeCliced = timeAndDateCliced[0];
-    var dateCliced = timeAndDateCliced[1];
-    document.getElementById("workDate").value = dateCliced;
-    document.getElementById("startTime").value = timeCliced;
+    var date = document.getElementById("workDate").value;
+    var sTime = document.getElementById("startTime").value;
+    var eTime = document.getElementById("endTime").value;
+    var clName = document.getElementById("clientName").value;
+    var info = document.getElementById("otherInfo").value;
+    var wType = document.getElementById("workType").value;
+    if (date === "" || clName === "" || sTime === "" || eTime === "" || info === "" || wType === "") {
+      document.getElementById("infoAsText").innerHTML = "Täida kõik väljad";
+    } else {
+      var allInfo = date + "|" + sTime + "|" + eTime + "|" + clName + "|" + info + "|" + wType;
+      $.ajax({
+        type: "POST",
+        url: "updateTime.php",
+        data: {
+          updateTime: allInfo
+        },
+        success: function (response) {
+          console.log(response);
+          document.getElementById("infoAsText").innerHTML = response;
+          $(".mySchedule").load("index.php");
+          $(".addTimeContainer").slideUp();
+        }
+      });
 
+    }
   });
   $(".exitForm").click(function () {
     $(".addTimeContainer").slideUp();
@@ -171,6 +200,21 @@ $('document').ready(function () {
 	return nextMonday;
 }*/
 
+function enableHourClick() {
+  $('.hour').on('mousedown', function () {
+    document.getElementById("endTime").value = "";
+    document.getElementById("clientName").value = "";
+    document.getElementById("otherInfo").value = "";
+    document.getElementById("workType").value = "";
+    var idName = $(this).attr('id');
+    var timeAndDateCliced = idName.split("|");
+    var timeCliced = timeAndDateCliced[0];
+    var dateCliced = timeAndDateCliced[1];
+    document.getElementById("workDate").value = dateCliced;
+    document.getElementById("startTime").value = timeCliced;
+    getAllDataForForm(idName);
+  });
+}
 
 function generateWeekWithData($a) {
   $("#mySchedule").empty();
@@ -260,6 +304,7 @@ function show($date) {
             var idName = listOfidNames[j];
             colorDiv(workType, idName);
             document.getElementById(idName).innerHTML = row[5] + "<br> " + row[3] + "<br> " + row[4];
+
 
           }
         }

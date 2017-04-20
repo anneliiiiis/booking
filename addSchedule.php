@@ -115,7 +115,7 @@
 		
 	</form>
 	<div class=" col-md-3 addSubmittButton">
-			<button type = "button" class="btn btn-default addNewTime" >Lisa aeg</button>
+			
 		
 		</div>
 		<button type="button" class="btn btn-default exitForm"> <span class=" glyphicon glyphicon-remove" aria-hidden="true"></span></button>
