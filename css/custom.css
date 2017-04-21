@@ -35,3 +35,21 @@
 .dropdown-menu{
 	position: fixed;
 }
+.takenMiddleLaser{
+  border-bottom-color: #80fbbc!important;
+}
+.takenMiddleMas{
+  border-bottom-color: #80eafb!important;
+}
+.takenMiddleNou{
+  border-bottom-color: #ff9279!important;
+}
+.takenMiddlefFusi{
+  border-bottom-color: #ffa7e0!important;
+}
+.takenMiddlefKine{
+  border-bottom-color: #fbf280!important;
+}
+.chosenTime{
+  background-color: #848484!important;
+}

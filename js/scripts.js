@@ -1,45 +1,91 @@
 $('document').ready(function () {
-
+  var selectedHours = [];
+  var mouseIsDown = false;
   var curretDate = new Date();
-  //console.log(curretDate);
-  //var nextMonDay = nextWeek(curretDate);
   generateWeekWithData(curretDate);
 
-  /*$("#generateNextWeek").click(function () {
-  	var nextMondayDate = new Date(nextMonDay);
-  	console.log("järka mon " + nextMondayDate);
-  	generateWeekWithData(nextMondayDate);
-  });*/
-  //uue aja lisamise nupp navbaris
   $(".addTime").click(function () {
     $(".addSubmittButton").empty();
-
+    enableScheduleAdd();
     var $button = $('<button type = "button" class="btn btn-default addNewTime" >Lisa aeg</button>');
     $button.appendTo($(".addSubmittButton"));
 
     document.getElementById("infoAsText").innerHTML = "vali algusaeg";
     $(".workScheduleButtons").slideUp();
     $(".addTimeContainer").slideDown();
+    $('.hour').on('mouseenter', function () {
+      if (mouseIsDown) {
+        var idName = $(this).attr('id');
+        selectedHours.push(idName);
+        var lastClasses = document.getElementById(idName).className;
+        document.getElementById(idName).className = lastClasses + " chosenTime";
+      }
+    });
     $('.hour').on('mousedown', function () {
-      document.getElementById("endTime").value = "";
-      document.getElementById("clientName").value = "";
-      document.getElementById("otherInfo").value = "";
-      document.getElementById("workType").value = "";
+      for (classElem = 0; classElem < selectedHours.length; classElem++) {
+        var id = selectedHours[classElem];
+        var classes = document.getElementById(id).className;
+        classes = classes.replace("chosenTime", "");
+        document.getElementById(id).className = classes;
+
+      }
+      selectedHours = [];
+      mouseIsDown = true;
+      emptyAllAddScheduleInputs();
       var idName = $(this).attr('id');
       var timeAndDateCliced = idName.split("|");
+      var lastClasses = document.getElementById(idName).className;
+      selectedHours.push(idName);
+      document.getElementById(idName).className = lastClasses + " chosenTime";
       var timeCliced = timeAndDateCliced[0];
       var dateCliced = timeAndDateCliced[1];
       document.getElementById("workDate").value = dateCliced;
       document.getElementById("startTime").value = timeCliced;
       getAllDataForForm(idName);
+
+
+
+    }).on('mouseup', function () {
+      mouseIsDown = false;
+      var idName = $(this).attr('id');
+      var timeAndDateCliced = idName.split("|");
+      var endtimeCliced = timeAndDateCliced[0];
+      endtimeCliced = add15minToEndTime(endtimeCliced);
+      document.getElementById("endTime").value = endtimeCliced;
+      var hasTime = false;
+      for (selectedNR = 0; selectedNR < selectedHours.length; selectedNR++) {
+        var selectedHourID = selectedHours[selectedNR];
+        var selectedHourClasses = document.getElementById(selectedHourID).classList;
+        for (classesElemNR = 0; classesElemNR < selectedHourClasses.length; classesElemNR++) {
+          if (selectedHourClasses[classesElemNR].startsWith("start")) {
+            hasTime = true;
+          }
+        }
+      }
+      if (hasTime) {
+        for (classElem = 0; classElem < selectedHours.length; classElem++) {
+          var id = selectedHours[classElem];
+          var classes = document.getElementById(id).className;
+          classes = classes.replace("chosenTime", "");
+          document.getElementById(id).className = classes;
+          disableScheduleAdd();
+        }
+      }else{
+        enableScheduleAdd();
+      }
+
     });
   });
+
+
+
 
   $(document).on('click', '.addNewTime', function () {
 
     var date = document.getElementById("workDate").value;
     var sTime = document.getElementById("startTime").value;
     var eTime = document.getElementById("endTime").value;
+    // eTime = subtract15minToEndTime(eTime);
     var clName = document.getElementById("clientName").value;
     var info = document.getElementById("otherInfo").value;
     var wType = document.getElementById("workType").value;
@@ -77,12 +123,7 @@ $('document').ready(function () {
           }
         }
       });
-      document.getElementById("workDate").value = "";
-      document.getElementById("startTime").value = "";
-      document.getElementById("endTime").value = "";
-      document.getElementById("clientName").value = "";
-      document.getElementById("otherInfo").value = "";
-      document.getElementById("workType").value = "";
+      emptyAllAddScheduleInputs();
 
     }
 
@@ -92,11 +133,6 @@ $('document').ready(function () {
   });
   //aja kustutamine
   $(".deleteTime").click(function () {
-    /* $(".hour").hover(function(){
-        $(this).css("background-color", "yellow");
-        }, function(){
-        $(this).css("background-color", "#dddddd");
-    });*/
     document.getElementById("infoAsText").innerHTML = "Vali aeg, mida soovid kustutada.";
     $(".workScheduleButtons").slideUp();
     $(".addTimeContainer").slideUp();
@@ -118,6 +154,7 @@ $('document').ready(function () {
 
   });
   $(".changeTime").click(function () {
+    enableScheduleAdd();
     $(".addSubmittButton").empty();
     document.getElementById("infoAsText").innerHTML = "Vali aeg, mida soovid muuta";
 
@@ -129,21 +166,36 @@ $('document').ready(function () {
     $(".addTimeContainer").slideDown();
 
     $('.hour').on('mousedown', function () {
+      enableScheduleAdd();
       document.getElementById("endTime").value = "";
       document.getElementById("clientName").value = "";
       document.getElementById("otherInfo").value = "";
       document.getElementById("workType").value = "";
+      document.getElementById("startTime").value = "";
+      document.getElementById("workDate").value = "";
       var idName = $(this).attr('id');
-      var timeAndDateCliced = idName.split("|");
-      var timeCliced = timeAndDateCliced[0];
-      var dateCliced = timeAndDateCliced[1];
-      document.getElementById("workDate").value = dateCliced;
-      document.getElementById("startTime").value = timeCliced;
-      getAllDataForForm(idName);
+      var classes = document.getElementById(idName).classList;
+      for (classElem = 0; classElem < classes.length; classElem++) {
+        if (classes[classElem].startsWith("start")) {
+          var startId = classes[classElem].slice(5);
+          idName = startId;
+          var timeAndDateCliced = idName.split("|");
+          var timeCliced = timeAndDateCliced[0];
+          var dateCliced = timeAndDateCliced[1];
+          document.getElementById("workDate").value = dateCliced;
+          document.getElementById("startTime").value = timeCliced;
+          getAllDataForForm(idName);
+        }
+      }
+      var checkIfTimeExsists = document.getElementById("startTime").value;
+      if (checkIfTimeExsists.length < 1) {
+        document.getElementById("infoAsText").innerHTML = "aega pole veel lisatud valu uus aeg";
+        disableScheduleAdd();
+      }
+
     });
   });
   $(document).on('click', '.updateTime', function () {
-    console.log("click click :)");
 
     var date = document.getElementById("workDate").value;
     var sTime = document.getElementById("startTime").value;
@@ -286,7 +338,6 @@ function show($date) {
       action: $date
     },
     success: function (response) {
-      console.log(response);
       if (response != "") {
         response = response.slice(0, -2);
         var elements = response.split("--");
@@ -303,7 +354,29 @@ function show($date) {
           for (var j = 0; j < listOfidNames.length; j++) {
             var idName = listOfidNames[j];
             colorDiv(workType, idName);
-            document.getElementById(idName).innerHTML = row[5] + "<br> " + row[3] + "<br> " + row[4];
+
+
+            document.getElementById(idName).className = "hour taken";
+            // kui j on 1 siis on viimane selle aja hour div(tagurpidi)
+            if (j != 1 && workType.toLowerCase() === "laser") {
+              document.getElementById(idName).className = " hour takenMiddleLaser taken";
+            } else if (j != 1 && workType.toLowerCase() === "massaaž") {
+              document.getElementById(idName).className = " hour takenMiddleMas taken";
+            } else if (j != 1 && workType.toLowerCase() === "kinesioteipimine") {
+              document.getElementById(idName).className = "hour takenMiddlefKine taken";
+            } else if (j != 1 && workType.toLowerCase() === "füsioteraapia") {
+              document.getElementById(idName).className = "hour takenMiddlefFusi taken";
+            } else if (j != 1 && workType.toLowerCase() === "nõustamine") {
+              document.getElementById(idName).className = "hour takenMiddleNou taken";
+            }
+            if (j == 0) {
+              document.getElementById(idName).innerHTML = "<b>" + row[5] + "</b><br> " + row[3] + "<br> " + row[4];
+              var timeStart = idName;
+
+            } else {
+              var classNames = document.getElementById(idName).className;
+              document.getElementById(idName).className = classNames + " start" + timeStart;
+            }
 
 
           }
@@ -323,7 +396,6 @@ function getAllDataForForm($data) {
     },
     success: function (response) {
       if (response != "") {
-        console.log(response);
         var row = response.split("|");
         var date = row[0];
         var startTime = row[1].slice(0, -3);
@@ -351,7 +423,7 @@ function colorDiv($string, $id) {
     document.getElementById($id).style.backgroundColor = "#80fbbc";
   } else if ($string.toLowerCase() == "nõustamine") {
     document.getElementById($id).style.backgroundColor = "#ff9279";
-  } else if ($string.toLowerCase() == "massaž") {
+  } else if ($string.toLowerCase() == "massaaž") {
     document.getElementById($id).style.backgroundColor = "#80eafb";
   } else if ($string.toLowerCase() == "füsioteraapia") {
     document.getElementById($id).style.backgroundColor = "#ffa7e0";
@@ -361,6 +433,23 @@ function colorDiv($string, $id) {
 
 }
 
+function enableScheduleAdd() {
+  document.getElementById('endTime').disabled = false;
+  document.getElementById('startTime').disabled = false;
+  document.getElementById('workDate').disabled = false;
+  document.getElementById('workType').disabled = false;
+  document.getElementById('otherInfo').disabled = false;
+  document.getElementById('clientName').disabled = false;
+}
+
+function disableScheduleAdd() {
+  document.getElementById('endTime').disabled = true;
+  document.getElementById('startTime').disabled = true;
+  document.getElementById('workDate').disabled = true;
+  document.getElementById('workType').disabled = true;
+  document.getElementById('otherInfo').disabled = true;
+  document.getElementById('clientName').disabled = true;
+}
 
 function deleteFirstZero($time) {
   if ($time[0] == "0") {
@@ -394,6 +483,53 @@ function getIdNames($startTime, $endTime, $date) {
   }
   return listOfid;
 
+}
+
+
+function subtract15minToEndTime($time) {
+  var timelist = $time.split(":");
+  var newTime;
+  if (timelist[1] == "45") {
+    newTime = timelist[0] + ":" + '30';
+  }
+  if (timelist[1] == "30") {
+    newTime = timelist[0] + ":" + '15';
+  }
+  if (timelist[1] == "15") {
+    newTime = timelist[0] + ":" + '00';
+  }
+  if (timelist[1] == "00") {
+    newTime = (timelist[0] - +'1') + ":" + '45';
+  }
+  return newTime;
+}
+
+function add15minToEndTime($time) {
+  var timelist = $time.split(":");
+  var newTime;
+  if (timelist[1] == "00") {
+    newTime = timelist[0] + ":" + '15';
+  }
+  if (timelist[1] == "30") {
+    newTime = timelist[0] + ":" + '45';
+  }
+  if (timelist[1] == "15") {
+    newTime = timelist[0] + ":" + '30';
+  }
+  if (timelist[1] == "45") {
+    newTime = (+timelist[0] + 1) + ":" + '00';
+    console.log(newTime);
+  }
+  return newTime;
+}
+
+function emptyAllAddScheduleInputs() {
+  document.getElementById("workDate").value = "";
+  document.getElementById("startTime").value = "";
+  document.getElementById("endTime").value = "";
+  document.getElementById("clientName").value = "";
+  document.getElementById("otherInfo").value = "";
+  document.getElementById("workType").value = "";
 }
 
 $('.datepicker1').datepicker({

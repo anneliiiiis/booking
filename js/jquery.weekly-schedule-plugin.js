@@ -210,10 +210,13 @@
 			});
 			$('.hour').css({
 				background: "#dddddd", // option
-				marginBottom: "1px", // option
+				borderBottom: "solid #fff", // option
+                borderBottomWidth: "1px",
 				width: "100%",
 				height: "80px",
 				userSelect: "none"
+
+    
 			});
 
 			function getSelectedHour() {

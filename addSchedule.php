@@ -106,7 +106,7 @@
 				<select class="form-control " name="work_type" id="workType">
 					<option>Nõustamine</option>
 					<option>Laser</option>
-					<option>Massaž</option>
+					<option>Massaaž</option>
 					<option>Füsioteraapia</option>
 					<option>Kinesioteipimine</option>
 				</select>
