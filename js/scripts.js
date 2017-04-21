@@ -70,7 +70,7 @@ $('document').ready(function () {
           document.getElementById(id).className = classes;
           disableScheduleAdd();
         }
-      }else{
+      } else {
         enableScheduleAdd();
       }
 
@@ -136,6 +136,12 @@ $('document').ready(function () {
     document.getElementById("infoAsText").innerHTML = "Vali aeg, mida soovid kustutada.";
     $(".workScheduleButtons").slideUp();
     $(".addTimeContainer").slideUp();
+    $('.hour').on('mouseenter', function () {
+
+      var idName = $(this).attr('id');
+      var lastClasses = document.getElementById(idName).className;
+      document.getElementById(idName).className = lastClasses + " deleteHover";
+    });
     $('.hour').on('mousedown', function () {
       var idName = $(this).attr('id');
       $.ajax({
