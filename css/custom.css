@@ -27,7 +27,10 @@ body{
   background-color: #fff;
 }
 .sendWorkWeek{
-  width: 100%;
+  width: 50%;
+}
+.deleteWorkWeek{
+  width: 50%;
 }
 .container {
   margin-top: 90px;
@@ -80,4 +83,18 @@ body{
 }
 .infoIcon{
   padding: 3px;
+}
+.chosenTimeWorkerMerily{
+  color: #576!important;
+}
+.chosenTimeWorkerKristiina {
+  color: #867!important;
+  margin-top: 20px; 
+}
+
+.firstWorker{
+  background-color: #576;
+}
+.secondWorker{
+   background-color: #867;
 }

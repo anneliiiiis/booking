@@ -295,10 +295,17 @@ function emptyAllAddScheduleInputs() {
 function addWorkSchedule($worker) {
   var selectedWorkScheduleId = [];
   var mouseIsDown = false;
+  var innerHTML = document.getElementsByClassName("hour").innerHTML;
+  document.getElementsByClassName("hour").innerHTML = innerHTML +  + '<div id="workerIcon"></div>';
   $('.hour').on('mouseenter', function () {
     if (mouseIsDown) {
       var idName = $(this).attr('id');
       selectedWorkScheduleId.push(idName);
+
+      var workerIcon = document.getElementsByClassName("workerIcon").innerHTML;
+      if (workerIcon === "") {
+        document.getElementsById("workerIcon").innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker pull-right' + $worker + '"></span>';
+      }
     }
 
   });
@@ -306,11 +313,16 @@ function addWorkSchedule($worker) {
     mouseIsDown = true;
     var idName = $(this).attr('id');
     selectedWorkScheduleId.push(idName);
+    var workerIcon = document.getElementsByClassName("workerIcon").innerHTML;
+    if (workerIcon === "") {
+      document.getElementsById("workerIcon").innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker pull-right' + $worker + '"></span>';
+    }
+
 
   }).on('mouseup', function () {
     mouseIsDown = false;
   });
-  return selectedWorkScheduleId;
+
 }
 
 
