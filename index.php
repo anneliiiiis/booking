@@ -4,7 +4,6 @@ if(!isset($_SESSION['username'])){
    header("Location:login.php");
 }
 
-include 'phpscript.php';
 include 'head.php';
 ?>
 
@@ -33,5 +32,6 @@ include 'head.php';
 	</div>
 	<?php include 'schedule.php';?>
 </body>
+<script src="js/functions.js"></script>
 <script src="js/scripts.js"></script>
 

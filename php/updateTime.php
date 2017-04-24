@@ -11,7 +11,7 @@ require_once('mySQLcon.php');
 if(isset($_POST['updateTime']) && !empty($_POST['updateTime'])) {
     $updateTime = $_POST["updateTime"];
     $query = "UPDATE schedule SET date = ?,startTime  = ?,endTime =? ,clientName = ?,info=? ,workType = ? WHERE date=? AND startTime=? ";
-    list($form_date, $start_time, $end_time, $clientName, $info, $work_type) = split('[|]', $updateTime);
+    list($form_date, $start_time, $end_time, $clientName, $info, $work_type) = explode('|', $updateTime);
     $start_time  = "0" . $start_time . ":00";
     $stmt = mysqli_prepare($con, $query);	
 	mysqli_stmt_bind_param($stmt, "ssssssss", $form_date, $start_time,$end_time ,$clientName, $info,$work_type, $form_date, $start_time);

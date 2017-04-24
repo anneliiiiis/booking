@@ -4,7 +4,7 @@
 		<div class="form-group col-md-3">
 			<label class="control-label" for="date">Kuupäev:</label>
 			
-				<input  class="span2 workDate" size="16" name="workDate" id = "workDate" type="text">
+				<input  class="span2 workDate" size="16" name="workDate" id = "workDate" type="data" maxlength="8">
 
 		</div>
 		
@@ -51,6 +51,26 @@
 				<option>16:15</option>
 				<option>16:30</option>
 				<option>16:45</option>
+        <option>17:00</option>
+				<option>17:15</option>
+				<option>17:30</option>
+				<option>17:45</option>
+				<option>18:00</option>
+				<option>18:15</option>
+				<option>18:30</option>
+				<option>18:45</option>
+				<option>19:00</option>
+				<option>19:15</option>
+				<option>19:30</option>
+				<option>19:45</option>
+				<option>20:00</option>
+				<option>20:15</option>
+				<option>20:30</option>
+				<option>20:45</option>
+				<option>20:00</option>
+				<option>20:15</option>
+				<option>20:30</option>
+				<option>20:45</option>
 			</select>
 		</div>
 		<div class="form-group col-md-3">
@@ -88,18 +108,46 @@
 				<option>14:15</option>
 				<option>14:30</option>
 				<option>14:45</option>
+				<option>15:00</option>
+				<option>15:15</option>
+				<option>15:30</option>
+				<option>15:45</option>
+				<option>16:00</option>
+				<option>16:15</option>
+				<option>16:30</option>
+				<option>16:45</option>
+        <option>17:00</option>
+				<option>17:15</option>
+				<option>17:30</option>
+				<option>17:45</option>
+				<option>18:00</option>
+				<option>18:15</option>
+				<option>18:30</option>
+				<option>18:45</option>
+				<option>19:00</option>
+				<option>19:15</option>
+				<option>19:30</option>
+				<option>19:45</option>
+				<option>20:00</option>
+				<option>20:15</option>
+				<option>20:30</option>
+				<option>20:45</option>
+				<option>20:00</option>
+				<option>20:15</option>
+				<option>20:30</option>
+				<option>20:45</option>
 			</select>
 
 		</div>
 		<div class="form-group col-md-3">
 			<label class="control-label" for="name">Kliendi nimi:</label>
 			<div class="">
-				<input type="text" class="form-control" id="clientName" name="clientName" placeholder="kliendi nimi">
+				<input type="text" class="form-control" id="clientName" maxlength="100" name="clientName" placeholder="kliendi nimi">
 			</div>
 		</div>
 		<div class="form-group col-md-3">
 			<label class="control-label" for="info">Muu info:</label>
-			<input type="text" class="form-control" id="otherInfo" name="info" placeholder="muu info">
+			<input type="text" class="form-control" id="otherInfo" maxlength="100" name="info" placeholder="muu info">
 		</div>
 		<div class="form-group col-md-3">
 				<label class="control-label ">Protseduur:</label>

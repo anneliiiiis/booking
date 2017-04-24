@@ -3,9 +3,9 @@ require_once('mySQLcon.php');
 
 $action = $_POST["action"];
 if ($action==""){
-	echo"jõudsin siia poop";
+	echo"";
 }else{
-	list($time, $date) = split('[|]', $action);
+	list($time, $date) = explode('|', $action);
 	$query = "DELETE FROM schedule WHERE date = ? AND startTime = ?";
 	$stmt = mysqli_prepare($con, $query);
 	mysqli_stmt_bind_param($stmt, "ss", $date, $time);
@@ -14,7 +14,7 @@ if ($action==""){
 	if($affected_rows > 0){
 		echo "Aeg kustutatud kuupäevaga: " . $date . " kellaajaga: " . $time;
 	}else{
-		echo "Aeg pole veel lisatud.";
+		echo "";
 	}
 }
 $con->close();

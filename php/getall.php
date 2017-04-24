@@ -6,7 +6,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 	if ($action==""){
 		echo"action on tühi";
 	}else{
-		list($time, $date) = split('[|]', $action);
+		list($time, $date) = explode('|', $action);
 		$query ="SELECT * FROM schedule WHERE date = '$date' AND startTime = '$time'";
 		$show = mysqli_query($con, $query) or die("errrroooor");
 		while ($row  = mysqli_fetch_array($show)){
