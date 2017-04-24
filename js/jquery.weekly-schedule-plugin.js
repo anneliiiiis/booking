@@ -244,7 +244,7 @@
 
       /*
        * Hook eventlisteners
-       */
+       
 
 
       $("#firstWorker").click(function () {
@@ -298,27 +298,7 @@
           }
         });
 
-        function focusOn(day) {
-          var targetDayClass = $(day).attr('class').split('\ ')[1];
-          var dayContainer = $('.day');
 
-          for (var i = 0; i < dayContainer.length; i++) {
-            if ($(dayContainer[i]).hasClass(targetDayClass)) {
-              continue;
-            }
-
-            var hours = $(dayContainer[i]).children();
-            for (var j = 0; j < hours.length; j++) {
-              $(hours[j]).addClass(disabled);
-            }
-          }
-
-          $(day).on('mouseleave', function () {
-            clearFocus();
-            mousedown = false;
-            devarionMode = false;
-          });
-        }
 
         function clearFocus() {
           var dayContainer = $('.day');
@@ -333,7 +313,7 @@
         }
       }
 
-
+*/
 
       // Prevent Right Click
       $('.schedule').on('contextmenu', function () {

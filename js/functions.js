@@ -76,7 +76,7 @@ function getDayOfWeek(d, nr) {
 
 
 function show($date) {
-  
+
   $.ajax({
     type: "POST",
     url: "php/phpscript.php",
@@ -98,38 +98,38 @@ function show($date) {
 
           var listOfidNames = getIdNames(startTime, endTime, date);
           var workType = row[5];
-          var timeStart = listOfidNames[listOfidNames.length-1];
+          var timeStart = listOfidNames[listOfidNames.length - 1];
           for (var j = 0; j < listOfidNames.length; j++) {
             var idName = listOfidNames[j];
             colorDiv(workType, idName);
 
-            
+
             document.getElementById(idName).className = "hour taken start" + timeStart;
 
             // kui j on 1 siis on viimane selle aja hour div(tagurpidi)
             if (j != 0 && workType.toLowerCase() === "laser") {
               var classofelem = document.getElementById(idName).className;
-               document.getElementById(idName).className = classofelem + " takenMiddleLaser";
+              document.getElementById(idName).className = classofelem + " takenMiddleLaser";
             } else if (j != 0 && workType.toLowerCase() === "massaaž") {
               var classofelem = document.getElementById(idName).className;
-              document.getElementById(idName).className =classofelem + " takenMiddleMas";
+              document.getElementById(idName).className = classofelem + " takenMiddleMas";
             } else if (j != 0 && workType.toLowerCase() === "kinesioteipimine") {
               var classofelem = document.getElementById(idName).className;
-              document.getElementById(idName).className = classofelem +" takenMiddlefKine";
+              document.getElementById(idName).className = classofelem + " takenMiddlefKine";
             } else if (j != 0 && workType.toLowerCase() === "füsioteraapia") {
               var classofelem = document.getElementById(idName).className;
-              document.getElementById(idName).className = classofelem +" takenMiddlefFusi";
+              document.getElementById(idName).className = classofelem + " takenMiddlefFusi";
             } else if (j != 0 && workType.toLowerCase() === "nõustamine") {
               var classofelem = document.getElementById(idName).className;
-              document.getElementById(idName).className = classofelem +" takenMiddleNou";
+              document.getElementById(idName).className = classofelem + " takenMiddleNou";
             }
 
-            if (j === (listOfidNames.length-1)) {
+            if (j === (listOfidNames.length - 1)) {
               var startclassNames = document.getElementById(idName).className;
-             // console.log(idName+"- " +startclassNames);
-              document.getElementById(idName).className = startclassNames + " thisIsStart" ;
-              
-              document.getElementById(idName).innerHTML = '<div class="infoIcon pull-left" title="'+row[4]+'"><span class="glyphicon glyphicon-info-sign "></span></div>'+'<div class="deleteButtonIcon pull-right"></div> <b>' + row[5] + "</b><br> " + row[3] + "<br> ";
+              // console.log(idName+"- " +startclassNames);
+              document.getElementById(idName).className = startclassNames + " thisIsStart";
+
+              document.getElementById(idName).innerHTML = '<div class="infoIcon pull-left" title="' + row[4] + '"><span class="glyphicon glyphicon-info-sign "></span></div>' + '<div class="deleteButtonIcon pull-right"></div> <b>' + row[5] + "</b><br> " + row[3] + "<br> ";
             }
           }
         }
@@ -137,6 +137,7 @@ function show($date) {
     }
   });
 }
+
 function getAllDataForForm($data) {
   $.ajax({
     type: "POST",
@@ -290,3 +291,55 @@ function emptyAllAddScheduleInputs() {
   document.getElementById("otherInfo").value = "";
   document.getElementById("workType").value = "";
 }
+
+function addWorkSchedule($worker) {
+  var selectedWorkScheduleId = [];
+  var mouseIsDown = false;
+  $('.hour').on('mouseenter', function () {
+    if (mouseIsDown) {
+      var idName = $(this).attr('id');
+      selectedWorkScheduleId.push(idName);
+    }
+
+  });
+  $('.hour').on('mousedown', function () {
+    mouseIsDown = true;
+    var idName = $(this).attr('id');
+    selectedWorkScheduleId.push(idName);
+
+  }).on('mouseup', function () {
+    mouseIsDown = false;
+  });
+  return selectedWorkScheduleId;
+}
+
+
+
+
+
+
+
+
+
+/*fnction focusOn(day) {
+  var targetDayClass = $(day).attr('class').split('\ ')[1];
+  var dayContainer = $('.day');
+
+  for (var i = 0; i < dayContainer.length; i++) {
+    if ($(dayContainer[i]).hasClass(targetDayClass)) {
+      continue;
+    }
+
+    var hours = $(dayContainer[i]).children();
+    for (var j = 0; j < hours.length; j++) {
+      $(hours[j]).addClass(disabled);
+    }
+  }
+
+  $(day).on('mouseleave', function () {
+    clearFocus();
+    mousedown = false;
+    devarionMode = false;
+  });
+}
+*/

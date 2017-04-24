@@ -294,4 +294,15 @@ $('document').ready(function () {
     workScheduleOn = false;
   });
 
+
+  $("#firstWorker").click(function () {
+    var worker = "Merily";
+    var dateTimeList = addWorkSchedule(worker);
+
+  });
+
+  $("#secondWorker").click(function () {
+    var worker = "Kristiina";
+    var dateTimeList = addWorkSchedule(worker);
+  });
 });
