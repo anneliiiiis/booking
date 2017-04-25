@@ -27,11 +27,9 @@ body{
   background-color: #fff;
 }
 .sendWorkWeek{
-  width: 50%;
+  width: 100%;
 }
-.deleteWorkWeek{
-  width: 50%;
-}
+
 .container {
   margin-top: 90px;
 }

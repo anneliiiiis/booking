@@ -284,8 +284,10 @@ $('document').ready(function () {
 
   //uue töögraafiku lisamine
   $(".addWorkSchedule").click(function () {
+    $('#secondWorker').prop('disabled', false);
+    $('#firstWorker').prop('disabled', false);
     $(".addTimeContainer").slideUp();
-    $(".workScheduleButtons").slideToggle();
+    $(".workScheduleButtons").slideDown();
     $(".deleteButtonIcon").empty();
     selectedHours = emptySelectedHoursClass(selectedHours);
     addTimeOn = false;
@@ -296,12 +298,14 @@ $('document').ready(function () {
 
 
   $("#firstWorker").click(function () {
+    $('#secondWorker').prop('disabled', true);
     var worker = "Merily";
     addWorkSchedule(worker);
 
   });
 
   $("#secondWorker").click(function () {
+    $('#firstWorker').prop('disabled', true);
     var worker = "Kristiina";
     addWorkSchedule(worker);
   });
