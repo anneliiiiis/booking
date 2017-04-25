@@ -128,8 +128,8 @@ function show($date) {
               var startclassNames = document.getElementById(idName).className;
               // console.log(idName+"- " +startclassNames);
               document.getElementById(idName).className = startclassNames + " thisIsStart";
-
-              document.getElementById(idName).innerHTML = '<div class="infoIcon pull-left" title="' + row[4] + '"><span class="glyphicon glyphicon-info-sign "></span></div>' + '<div class="deleteButtonIcon pull-right"></div> <b>' + row[5] + "</b><br> " + row[3] + "<br> ";
+              var thisINNER = document.getElementById(idName).innerHTML;
+              document.getElementById(idName).innerHTML = '<div class="infoIcon pull-left" title="' + row[4] + '"><span class="glyphicon glyphicon-info-sign "></span></div>' + '<div class="deleteButtonIcon pull-right"></div> <b>' + row[5] + "</b><br> " + row[3] + "<br> " + thisINNER;
             }
           }
         }
@@ -293,36 +293,53 @@ function emptyAllAddScheduleInputs() {
 }
 
 function addWorkSchedule($worker) {
-  var selectedWorkScheduleId = [];
+  var selectedWorkScheduleIdAdd = [];
+  var selectedWorkScheduleIdRemoved = [];
   var mouseIsDown = false;
   var innerHTML = document.getElementsByClassName("hour").innerHTML;
-  document.getElementsByClassName("hour").innerHTML = innerHTML +  + '<div id="workerIcon"></div>';
+  document.getElementsByClassName("hour").innerHTML = innerHTML + +'<div id="workerIcon"></div>';
   $('.hour').on('mouseenter', function () {
     if (mouseIsDown) {
       var idName = $(this).attr('id');
-      selectedWorkScheduleId.push(idName);
-
-      var workerIcon = document.getElementsByClassName("workerIcon").innerHTML;
-      if (workerIcon === "") {
-        document.getElementsById("workerIcon").innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker pull-right' + $worker + '"></span>';
+      var workerId = "worker" + idName;
+      var selection = ".selectedBy" + $worker;
+      if ($(this).hasClass(selection)) {
+        selectedWorkScheduleIdRemoved.push(idName);
+        document.getElementById(workerId).innerHTML = "";
+        $(this).removeClass(selection);
+      } else {
+        selectedWorkScheduleIdAdd.push(idName);
+        document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+        $(this).addClass(selection);
+        console.log("lisa");
       }
+
+
     }
 
   });
   $('.hour').on('mousedown', function () {
     mouseIsDown = true;
     var idName = $(this).attr('id');
-    selectedWorkScheduleId.push(idName);
-    var workerIcon = document.getElementsByClassName("workerIcon").innerHTML;
-    if (workerIcon === "") {
-      document.getElementsById("workerIcon").innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker pull-right' + $worker + '"></span>';
+    var workerId = "worker" + idName;
+    var selection = ".selectedBy" + $worker;
+    if ($(this).hasClass(selection)) {
+      selectedWorkScheduleIdRemoved.push(idName);
+      document.getElementById(workerId).innerHTML = "";
+      $(this).removeClass(selection);
+    } else {
+      selectedWorkScheduleIdAdd.push(idName);
+      document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+      $(this).addClass(selection);
+      console.log("lisa");
     }
+
 
 
   }).on('mouseup', function () {
     mouseIsDown = false;
   });
-
+  
 }
 
 

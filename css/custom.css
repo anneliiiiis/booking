@@ -89,9 +89,11 @@ body{
 }
 .chosenTimeWorkerKristiina {
   color: #867!important;
-  margin-top: 20px; 
 }
 
+.workerIcon{
+  float: right;
+}
 .firstWorker{
   background-color: #576;
 }

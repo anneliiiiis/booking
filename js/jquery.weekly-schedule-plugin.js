@@ -97,7 +97,13 @@
             id: hours[j] + "|" + datesForClass[i]
 
           });
-
+       
+          var workerIcon = $('<div></div>', {
+            class: "workerIcon",
+            id: "worker"+hours[j] + "|" + datesForClass[i]
+          });
+          
+          hour.append(workerIcon);
           day.append(hour);
         }
 
@@ -204,7 +210,7 @@
         display: "flex",
         flexDirection: "column",
         marginBottom: "1px",
-        marginRight:"1px",
+        marginRight: "1px",
         background: "transparent", // option
         width: "100%"
       });
