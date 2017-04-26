@@ -132,7 +132,7 @@
       $('.header').css({
         position: "fixed",
         "z-index": "1",
-        height: "50px",
+        height: "38px",
         width: "100%",
         background: settings.headerBackgroundColor,
         marginBottom: "5px",
@@ -151,7 +151,7 @@
         height: '100%',
         margin: '2px' // option
       });
-      $('.header-item h3').css({
+      $('.header-item h4').css({
         margin: 0,
         textAlign: 'center',
         verticalAlign: 'middle',
@@ -186,7 +186,7 @@
 
       $('.hour-header-item').css({
         width: "100%",
-        height: "49px",
+        height: "38px",
         margin: "1px",
         border: "none", // option
         borderColor: "none", // option
@@ -203,7 +203,7 @@
         fontWeight: settings.fontWeight,
         paddingRight: "10%",
         userSelect: "none",
-        "font-size": "20px"
+        "font-size": "17px"
       });
 
       $('.day').css({
@@ -225,7 +225,7 @@
         borderLeft: "solid #fff", // option
         borderLeftWidth: "1px",*/
         width: "100%",
-        height: "50px",
+        height: "40px",
         userSelect: "none"
 
 

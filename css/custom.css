@@ -83,18 +83,21 @@ body{
   padding: 3px;
 }
 .chosenTimeWorkerMerily{
-  color: #576!important;
+  color: #f0ad4e!important;
 }
 .chosenTimeWorkerKristiina {
-  color: #867!important;
+  color: #d80b0b!important;
 }
 
 .workerIcon{
   float: right;
 }
 .firstWorker{
-  background-color: #576;
+  background-color: #f0ad4e;
 }
 .secondWorker{
-   background-color: #867;
+   background-color: #d80b0b;
+}
+.glyphicon-info-sign{
+    font-size: 17px;
 }

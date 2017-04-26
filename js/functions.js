@@ -292,12 +292,14 @@ function emptyAllAddScheduleInputs() {
 }
 
 function addWorkSchedule($worker) {
-  var selectedWorkScheduleIdAdd = [];
-  var selectedWorkScheduleIdRemoved = [];
+  var workHoursAddControl = [];
+  var workHoursRemoveControl = [];
+
   var mouseIsDown = false;
   var hasClassOnEnter = false;
   var innerHTML = document.getElementsByClassName("hour").innerHTML;
   document.getElementsByClassName("hour").innerHTML = innerHTML + +'<div id="workerIcon"></div>';
+
   $('.hour').on('mouseenter', function () {
     if (mouseIsDown) {
       var idName = $(this).attr('id');
@@ -306,37 +308,32 @@ function addWorkSchedule($worker) {
       var timeAndDate = idName.split("|");
       var datelist = [timeAndDate[1], timeAndDate[0]];
       if (hasClassOnEnter) {
-        document.getElementById(workerId).innerHTML = "";
-        $(this).removeClass(selection);
-        var removed = false;
-        for (n = 0; n < selectedWorkScheduleIdRemoved.length; n++) {
-          for (m = 0; m < selectedWorkScheduleIdRemoved[n].length; m++) {
-            if (timeAndDate[1] === selectedWorkScheduleIdRemoved[n][m]) {
-              selectedWorkScheduleIdRemoved[n].push(timeAndDate[0]);
-              removed = true;
-            }
+        if (!workHoursRemoveControl.includes(idName)) {
+          if (!workHoursAddControl.includes(idName)) {
+            workHoursRemoveControl.push(idName);
+            document.getElementById(workerId).innerHTML = "";
+            $(this).removeClass(selection);
+          } else {
+            var index = getIdOfElementInArray(workHoursAddControl, idName);
+            workHoursAddControl.splice(index, 1);
+
           }
-        }
-        if (!removed) {
-          selectedWorkScheduleIdRemoved.push(datelist);
         }
 
       } else {
-        document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
-        $(this).addClass(selection);
-        var added = false;
-        for (n = 0; n < selectedWorkScheduleIdAdd.length; n++) {
-          for (m = 0; m < selectedWorkScheduleIdAdd[n].length; m++) {
-            if (timeAndDate[1] === selectedWorkScheduleIdAdd[n][m]) {
-              selectedWorkScheduleIdAdd[n].push(timeAndDate[0]);
-              added = true;
-            }
+        if (!workHoursAddControl.includes(idName)) {
+          if (!workHoursRemoveControl.includes(idName)) {
+            workHoursAddControl.push(idName);
+            document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+            $(this).addClass(selection);
+          } else {
+            var index = getIdOfElementInArray(workHoursRemoveControl, idName);
+            workHoursRemoveControl.splice(index, 1);
           }
         }
-        if (!added) {
-          selectedWorkScheduleIdAdd.push(datelist);
-        }
+
       }
+
     }
   });
   $('.hour').on('mousedown', function () {
@@ -348,44 +345,47 @@ function addWorkSchedule($worker) {
     var datelist = [timeAndDate[1], timeAndDate[0]];
     if ($(this).hasClass(selection)) {
       hasClassOnEnter = true;
-      document.getElementById(workerId).innerHTML = "";
-      $(this).removeClass(selection);
-      console.log("eemalda");
-      var removed = false;
-      for (n = 0; n < selectedWorkScheduleIdRemoved.length; n++) {
-        for (m = 0; m < selectedWorkScheduleIdRemoved[n].length; m++) {
-          if (timeAndDate[1] === selectedWorkScheduleIdRemoved[n][m]) {
-            selectedWorkScheduleIdRemoved[n].push(timeAndDate[0]);
-            removed = true;
-          }
+      if (!workHoursRemoveControl.includes(idName)) {
+        if (!workHoursAddControl.includes(idName)) {
+          workHoursRemoveControl.push(idName);
+          document.getElementById(workerId).innerHTML = "";
+          $(this).removeClass(selection);
+        } else {
+          var index = getIdOfElementInArray(workHoursAddControl, idName);
+          workHoursAddControl.splice(index, 1);
+
+
         }
       }
-      if (!removed) {
-        selectedWorkScheduleIdRemoved.push(datelist);
-      }
+
     } else {
-      hasClassOnEnter = false;
-      document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
-      $(this).addClass(selection);
-      console.log("lisa");
-      var added = false;
-      for (n = 0; n < selectedWorkScheduleIdAdd.length; n++) {
-        for (m = 0; m < selectedWorkScheduleIdAdd[n].length; m++) {
-          if (timeAndDate[1] === selectedWorkScheduleIdAdd[n][m]) {
-            selectedWorkScheduleIdAdd[n].push(timeAndDate[0]);
-            added = true;
-          }
+      if (!workHoursAddControl.includes(idName)) {
+        if (!workHoursRemoveControl.includes(idName)) {
+          workHoursAddControl.push(idName);
+          document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+          $(this).addClass(selection);
+        } else {
+          var index = getIdOfElementInArray(workHoursRemoveControl, idName);
+          workHoursRemoveControl.splice(index, 1);
         }
       }
-      if (!added) {
-        selectedWorkScheduleIdAdd.push(datelist);
-      }
+
     }
   }).on('mouseup', function () {
     mouseIsDown = false;
   });
 
+
+
+
   $(".sendWorkWeek").click(function () {
+    console.log(workHoursAddControl);
+    //console.log(workHoursRemoveControl);
+    var selectedWorkScheduleIdAdd = listInListByDate(workHoursAddControl);
+
+    var selectedWorkScheduleIdRemoved = listInListByDate(workHoursRemoveControl);
+    console.log(selectedWorkScheduleIdAdd);
+    // console.log(selectedWorkScheduleIdRemoved)
     var dataForSend = "";
 
     selectedWorkScheduleIdAdd.sort();
@@ -393,30 +393,30 @@ function addWorkSchedule($worker) {
 
       var dayDate = selectedWorkScheduleIdAdd[n].shift();
       var times = selectedWorkScheduleIdAdd[n].sort();
-      console.log(times);
-      console.log(dayDate);
+      //console.log(times);
+      // console.log(dayDate);
       dataForSend += dayDate + "," + times[0] + ",";
       var startTime = "";
       var endTime = "";
       for (timeIndex = 0; timeIndex < times.length; timeIndex++) {
 
         var currentTime = times[timeIndex];
-        console.log(currentTime);
+        //console.log(currentTime);
         var nextTime = add15minToEndTime(currentTime);
-        console.log(nextTime);
+        // console.log(nextTime);
 
         if (nextTime === times[timeIndex + 1]) {
-          console.log("järgmine olemas");
+          //console.log("järgmine olemas");
         } else {
-          console.log("järgmist pole");
+          //console.log("järgmist pole");
           endTime = nextTime;
           dataForSend += nextTime + "," + $worker + "--";
 
           if (timeIndex === times.length - 1) {
-            console.log("viimane element");
+            //console.log("viimane element");
           } else {
             dataForSend += dayDate + "," + (times[timeIndex + 1]) + ",";
-            console.log("veel üks aeg on sellel kuupäeval");
+            // console.log("veel üks aeg on sellel kuupäeval");
           }
         }
 
@@ -445,14 +445,34 @@ function addWorkSchedule($worker) {
 
 }
 
-function hasDuplicates(array) {
-  var valuesSoFar = Object.create(null);
-  for (var i = 0; i < array.length; ++i) {
-    var value = array[i];
-    if (value in valuesSoFar) {
-      return true;
+function listInListByDate($regularList) {
+  selectedWorkScheduleIdAdd = [];
+  for (index = 0; index < $regularList.length; index++) {
+    timeAndDate = $regularList[index].split("|");
+    var datelist = [timeAndDate[1], timeAndDate[0]];
+    var added = false;
+    for (n = 0; n < selectedWorkScheduleIdAdd.length; n++) {
+      for (m = 0; m < selectedWorkScheduleIdAdd[n].length; m++) {
+        if (timeAndDate[1] === selectedWorkScheduleIdAdd[n][m]) {
+          selectedWorkScheduleIdAdd[n].push(timeAndDate[0]);
+          added = true;
+        }
+      }
     }
-    valuesSoFar[value] = true;
+    if (!added) {
+      selectedWorkScheduleIdAdd.push(datelist);
+    }
   }
-  return false;
+  return selectedWorkScheduleIdAdd;
+
+}
+
+function getIdOfElementInArray($array, $id) {
+  var index = "";
+  for (i = 0; i < $array.length; i++) {
+    if ($id === $array[i]) {
+      index = i;
+    }
+  }
+  return index;
 }
