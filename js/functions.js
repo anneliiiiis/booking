@@ -62,6 +62,7 @@ function generateWeekWithData($a) {
     for (var i = 0; i < datesForClass.length; i++) {
 
       show(datesForClass[i]);
+      showWorkingHours(datesForClass[i]);
 
     }
   });
@@ -136,6 +137,45 @@ function show($date) {
       }
     }
   });
+}
+
+function showWorkingHours($date) {
+  $.ajax({
+    type: "POST",
+    url: "php/showWorkingHours.php",
+    data: {
+      action: $date
+    },
+    success: function (response) {
+      if (response != "") {
+
+        response = response.slice(0, -2);
+        var elements = response.split("--");
+        console.log(response);
+        for (var i = 0; i < elements.length; i++) {
+          var row = elements[i];
+          row = row.split("|");
+          var date = row[0];
+          var startTime = row[1].slice(0, -3);
+          var endTime = row[2].slice(0, -3);
+          console.log("end " + endTime);
+          var worker = row[3];
+          var idName = "";
+          var listOfidNames = getIdNames(startTime, endTime, date);
+          var timeStart = listOfidNames[listOfidNames.length - 1];
+          for (var j = 0; j < listOfidNames.length; j++) {
+            var idName = listOfidNames[j];
+            workerId = "worker" + idName;
+            var classes = document.getElementById(idName).className;
+            document.getElementById(idName).className = classes + " selectedBy" + worker;
+            document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + worker + '"></span>';
+          }
+
+        }
+      }
+    }
+  });
+
 }
 
 function getAllDataForForm($data) {
