@@ -163,11 +163,12 @@ function showWorkingHours($date) {
           var idName = "";
           var listOfidNames = getIdNames(startTime, endTime, date);
           var timeStart = listOfidNames[listOfidNames.length - 1];
+          var dateStartTimeParsed = (date+startTime).replace(/-|:/gi, "");
           for (var j = 0; j < listOfidNames.length; j++) {
             var idName = listOfidNames[j];
             workerId = "worker" + idName;
             var classes = document.getElementById(idName).className;
-            document.getElementById(idName).className = classes + " selectedBy" + worker;
+            document.getElementById(idName).className = classes + " selectedBy" + worker + " startOfWork" + dateStartTimeParsed;
             document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + worker + '"></span>';
           }
 
@@ -334,6 +335,7 @@ function emptyAllAddScheduleInputs() {
 function addWorkSchedule($worker) {
   var workHoursAddControl = [];
   var workHoursRemoveControl = [];
+  var removeFromDB = [];
 
   var mouseIsDown = false;
   var hasClassOnEnter = false;
@@ -344,72 +346,105 @@ function addWorkSchedule($worker) {
     if (mouseIsDown) {
       var idName = $(this).attr('id');
       var workerId = "worker" + idName;
-      var selection = ".selectedBy" + $worker;
+      var selection = "selectedBy" + $worker;
       var timeAndDate = idName.split("|");
       var datelist = [timeAndDate[1], timeAndDate[0]];
-      if (hasClassOnEnter) {
-        if (!workHoursRemoveControl.includes(idName)) {
-          if (!workHoursAddControl.includes(idName)) {
-            workHoursRemoveControl.push(idName);
-            document.getElementById(workerId).innerHTML = "";
-            $(this).removeClass(selection);
-          } else {
-            var index = getIdOfElementInArray(workHoursAddControl, idName);
-            workHoursAddControl.splice(index, 1);
-
-          }
-        }
-
+      var thisClasses = this.className;
+      if (thisClasses.search('startOfWork') != -1) {
+        mouseIsDown = false;
       } else {
-        if (!workHoursAddControl.includes(idName)) {
-          if (!workHoursRemoveControl.includes(idName)) {
-            workHoursAddControl.push(idName);
-            document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
-            $(this).addClass(selection);
-          } else {
-            var index = getIdOfElementInArray(workHoursRemoveControl, idName);
-            workHoursRemoveControl.splice(index, 1);
+        if (hasClassOnEnter) {
+          if ($(this).hasClass(selection)) {
+            if (workHoursAddControl.includes(idName)) {
+              var index = getIdOfElementInArray(workHoursAddControl, idName);
+              workHoursAddControl.splice(index, 1);
+              document.getElementById(workerId).innerHTML = "";
+              $(this).removeClass(selection);
+            } else {
+              workHoursRemoveControl.push(idName);
+              document.getElementById(workerId).innerHTML = "";
+              $(this).removeClass(selection);
+
+            }
+            console.log("mous enter on selection");
+            console.log("ADD" + workHoursAddControl);
+            console.log("remove" + workHoursRemoveControl);
           }
+        } else {
+          if (!$(this).hasClass(selection)) {
+            if (workHoursRemoveControl.includes(idName)) {
+              document.getElementById(workerId).innerHTML = '<span class="newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+              $(this).addClass(selection);
+              var index = getIdOfElementInArray(workHoursRemoveControl, idName);
+              workHoursRemoveControl.splice(index, 1);
+
+            } else {
+              workHoursAddControl.push(idName);
+              document.getElementById(workerId).innerHTML = '<span class="newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+              $(this).addClass(selection);
+            }
+            console.log("mous enter on  NOselection");
+            console.log("ADD" + workHoursAddControl);
+            console.log("remove" + workHoursRemoveControl);
+
+          }
+
         }
-
       }
-
     }
   });
   $('.hour').on('mousedown', function () {
-    mouseIsDown = true;
+
     var idName = $(this).attr('id');
     var timeAndDate = idName.split("|");
     var workerId = "worker" + idName;
-    var selection = ".selectedBy" + $worker;
+    var selection = "selectedBy" + $worker;
     var datelist = [timeAndDate[1], timeAndDate[0]];
-    if ($(this).hasClass(selection)) {
-      hasClassOnEnter = true;
-      if (!workHoursRemoveControl.includes(idName)) {
-        if (!workHoursAddControl.includes(idName)) {
-          workHoursRemoveControl.push(idName);
+    //Kui on varem lisatud aeg
+    var thisClasses = this.className;
+    if (thisClasses.search('startOfWork') != -1) {
+      console.log("dbs olev aeg");
+      var classOfwork = this.classList[this.classList.length-1];
+      console.log(classOfwork);
+      $("."+classOfwork).css("background-color","#caaeae");
+    } else {
+      mouseIsDown = true;
+      if ($(this).hasClass(selection)) {
+        console.log(this.className);
+        hasClassOnEnter = true;
+        if (workHoursAddControl.includes(idName)) {
+          var index = getIdOfElementInArray(workHoursAddControl, idName);
+          workHoursAddControl.splice(index, 1);
           document.getElementById(workerId).innerHTML = "";
           $(this).removeClass(selection);
         } else {
-          var index = getIdOfElementInArray(workHoursAddControl, idName);
-          workHoursAddControl.splice(index, 1);
-
-
+          if (!workHoursRemoveControl.includes(idName)) {
+            workHoursRemoveControl.push(idName);
+            document.getElementById(workerId).innerHTML = "";
+            $(this).removeClass(selection);
+          }
         }
-      }
-
-    } else {
-      if (!workHoursAddControl.includes(idName)) {
-        if (!workHoursRemoveControl.includes(idName)) {
-          workHoursAddControl.push(idName);
-          document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+        console.log("mous down on selection");
+        console.log("ADD" + workHoursAddControl);
+        console.log("remove" + workHoursRemoveControl);
+      } else {
+        console.log(this.className);
+        hasClassOnEnter = false;
+        if (workHoursRemoveControl.includes(idName)) {
+          document.getElementById(workerId).innerHTML = '<span class=" newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
           $(this).addClass(selection);
-        } else {
           var index = getIdOfElementInArray(workHoursRemoveControl, idName);
           workHoursRemoveControl.splice(index, 1);
-        }
-      }
 
+        } else {
+          workHoursAddControl.push(idName);
+          document.getElementById(workerId).innerHTML = '<span class=" newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
+          $(this).addClass(selection);
+        }
+        console.log("mous down on  NOselection");
+        console.log("ADD" + workHoursAddControl);
+        console.log("remove" + workHoursRemoveControl);
+      }
     }
   }).on('mouseup', function () {
     mouseIsDown = false;
@@ -419,6 +454,7 @@ function addWorkSchedule($worker) {
 
 
   $(".sendWorkWeek").click(function () {
+    $(".saveWorkWeek").slideUp();
     console.log(workHoursAddControl);
     //console.log(workHoursRemoveControl);
     var selectedWorkScheduleIdAdd = listInListByDate(workHoursAddControl);
@@ -480,7 +516,7 @@ function addWorkSchedule($worker) {
 
       });
     }
-    $(".mySchedule").load("index.php");
+    location.reload();
   });
 
 }

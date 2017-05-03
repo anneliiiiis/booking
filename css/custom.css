@@ -1,6 +1,7 @@
-body{
+body {
   font-size: 12px;
 }
+
 .form-control {
   width: auto;
 }
@@ -26,7 +27,28 @@ body{
   z-index: 1;
   background-color: #fff;
 }
-.sendWorkWeek{
+
+.deleteAddWorkingHours {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 1;
+  background-color: #fff;
+  width: 100%;
+}
+
+.saveWorkWeek {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 1;
+  background-color: #fff;
+  width: 100%;
+}
+
+.sendWorkWeek {
   width: 100%;
 }
 
@@ -79,25 +101,36 @@ body{
 .deleteHover:hover {
   background-color: #848484!important;
 }
-.infoIcon{
+
+.infoIcon {
   padding: 3px;
 }
-.chosenTimeWorkerMerily{
+
+.chosenTimeWorkerMerily {
   color: #f0ad4e!important;
 }
+
 .chosenTimeWorkerKristiina {
   color: #d80b0b!important;
 }
 
-.workerIcon{
+.workerIcon {
   float: right;
 }
-.firstWorker{
+
+.firstWorker {
   background-color: #f0ad4e;
 }
-.secondWorker{
-   background-color: #d80b0b;
+
+.secondWorker {
+  background-color: #d80b0b;
 }
-.glyphicon-info-sign{
-    font-size: 17px;
+
+.glyphicon-info-sign {
+  font-size: 17px;
+}
+
+.newChosenTime {
+  background-color: wheat;
+  padding: 2px;
 }
