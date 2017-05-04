@@ -14,7 +14,7 @@ if ($action==""){
 	if($affected_rows > 0){
 		echo " " . $date . " kellaajaga: " . $time;
 	}else{
-		echo "";
+		echo "ei kustutatud sellist aega ";
 	}
 }
 $con->close();

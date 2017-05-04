@@ -2,8 +2,16 @@ body {
   font-size: 12px;
 }
 
+.mySchedule {
+  background-color: #e7e7e7;
+}
+
 .form-control {
   width: auto;
+}
+
+.hour:hover {
+  background-color: aqua;
 }
 
 .addTimeContainer {
@@ -13,7 +21,7 @@ body {
   left: 0px;
   padding: 12px;
   border-radius: 0px;
-  background-color: rgb(157, 216, 106);
+  background-color: #8dd0e4;
   color: #222;
   z-index: 1;
   width: 100%;
@@ -53,7 +61,7 @@ body {
 }
 
 .container {
-  margin-top: 90px;
+  margin-top: 73px;
 }
 
 .setWeek {
@@ -70,8 +78,8 @@ body {
 }
 
 .takenMiddleLaser {
-  border-bottom-color: #80fbbc!important;
-  border-top-color: #80fbbc!important;
+  border-bottom-color: #96f5e7!important;
+  border-top-color: #96f5e7!important;
 }
 
 .takenMiddleMas {
@@ -80,22 +88,22 @@ body {
 }
 
 .takenMiddleNou {
-  border-bottom-color: #ff9279!important;
-  border-top-color: #ff9279!important;
+  border-bottom-color: #c5baef!important;
+  border-top-color: #c5baef!important;
 }
 
 .takenMiddlefFusi {
-  border-bottom-color: #ffa7e0!important;
-  border-top-color: #ffa7e0!important;
+  border-bottom-color: #ff748f!important;
+  border-top-color: #ff748f!important;
 }
 
 .takenMiddlefKine {
-  border-bottom-color: #fbf280!important;
-  border-top-color: #fbf280!important;
+  border-bottom-color: #ffd893!important;
+  border-top-color: #ffd893!important;
 }
 
 .chosenTime {
-  background-color: #848484!important;
+  background-color: #337ab7!important;
 }
 
 .deleteHover:hover {
@@ -119,11 +127,13 @@ body {
 }
 
 .firstWorker {
-  background-color: #f0ad4e;
+  background-color: #c77500;
+  color: #fff;
 }
 
 .secondWorker {
-  background-color: #d80b0b;
+  background-color: #7b1111;
+  color: #fff;
 }
 
 .glyphicon-info-sign {
@@ -133,4 +143,13 @@ body {
 .newChosenTime {
   background-color: wheat;
   padding: 2px;
+}
+
+.exitForm {
+  background-color: transparent;
+}
+
+.exitForm:hover {
+  background-color: hsla(0, 2%, 53%, 0.37);
+  ;
 }

@@ -21,11 +21,11 @@
 
     if (typeof callerSettings == 'string') {
       switch (callerSettings) {
-        case 'getSelectedHour':
-          return getSelectedHour();
-          break;
-        default:
-          throw 'Weekly schedule method unrecognized!'
+      case 'getSelectedHour':
+        return getSelectedHour();
+        break;
+      default:
+        throw 'Weekly schedule method unrecognized!'
       }
     }
     // options is an object, initialize!
@@ -97,12 +97,12 @@
             id: hours[j] + "|" + datesForClass[i]
 
           });
-       
+
           var workerIcon = $('<div></div>', {
             class: "workerIcon",
-            id: "worker"+hours[j] + "|" + datesForClass[i]
+            id: "worker" + hours[j] + "|" + datesForClass[i]
           });
-          
+
           hour.append(workerIcon);
           day.append(hour);
         }
@@ -126,23 +126,22 @@
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
-        "margin-top": "25px"
+        "margin-top": "0px"
       });
 
       $('.header').css({
         position: "fixed",
         "z-index": "1",
-        height: "38px",
+        height: "59px",
+        top: "50px",
         width: "100%",
-        background: settings.headerBackgroundColor,
-        marginBottom: "5px",
+        background: "rgb(248, 248, 248)",
         display: "flex"
       });
       $('.align-block').css({
         width: "40%",
         height: "100%",
-        background: settings.headerBackgroundColor,
-        margin: "3px"
+        background: "rgb(248, 248, 248)"
       });
 
       // Style Header Items
@@ -168,14 +167,14 @@
       $('.hour-header').css({
         display: 'flex',
         flexDirection: 'column',
-        margin: '2px', // option
+        margin: "0px 1px 2px 2px",
+        background: "rgb(251, 255, 251)",
         marginRight: '1px',
-        background: "#fff",
         width: '40%'
       });
 
       $('.days-wrapper').css({
-        "margin-top": "55px",
+        "margin-top": "39px",
         width: "100%",
         background: "transparent", //option
         display: "flex",
@@ -214,9 +213,12 @@
         background: "transparent", // option
         width: "100%"
       });
+      $('.hour_hover').css({
+        backgroundColor: "#e7e7e7"
+      });
       $('.hour').css({
-        background: "#dddddd", // option
-        borderBottom: "solid #fff", // option
+        background: "rgb(251, 255, 251)", // option
+        borderBottom: "solid #e7e7e7", // option
         borderBottomWidth: "1px",
         /*borderTop: "solid #fff", // option
         borderTopWidth: "1px",

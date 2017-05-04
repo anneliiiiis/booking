@@ -130,7 +130,12 @@ function show($date) {
               // console.log(idName+"- " +startclassNames);
               document.getElementById(idName).className = startclassNames + " thisIsStart";
               var thisINNER = document.getElementById(idName).innerHTML;
-              document.getElementById(idName).innerHTML = thisINNER + '<div class="infoIcon pull-left" title="' + row[4] + '"><span class="glyphicon glyphicon-info-sign "></span></div>' + '<div class="deleteButtonIcon pull-right"></div> <b>' + row[5] + "</b><br> " + row[3] + "<br> ";
+              document.getElementById(idName).innerHTML = thisINNER + '<div class="infoIcon pull-left" title=""><span class="glyphicon glyphicon-info-sign "></span></div>' + '<div class="deleteButtonIcon pull-right"></div> <b>' + row[5] + "</b><br>";
+              $('#infoIcon').tooltipster({
+                content: $('<span>lalalalla</span>'),
+                theme: 'tooltipster-light',
+                position: 'bottom-left'
+              });
             }
           }
         }
@@ -151,24 +156,23 @@ function showWorkingHours($date) {
 
         response = response.slice(0, -2);
         var elements = response.split("--");
-        console.log(response);
         for (var i = 0; i < elements.length; i++) {
           var row = elements[i];
           row = row.split("|");
           var date = row[0];
           var startTime = row[1].slice(0, -3);
           var endTime = row[2].slice(0, -3);
-          console.log("end " + endTime);
+          
           var worker = row[3];
           var idName = "";
           var listOfidNames = getIdNames(startTime, endTime, date);
           var timeStart = listOfidNames[listOfidNames.length - 1];
-          var dateStartTimeParsed = (date+startTime).replace(/-|:/gi, "");
+          var dateStartTimeParsed = (date + startTime).replace(/-|:/gi, "");
           for (var j = 0; j < listOfidNames.length; j++) {
             var idName = listOfidNames[j];
             workerId = "worker" + idName;
             var classes = document.getElementById(idName).className;
-            document.getElementById(idName).className = classes + " selectedBy" + worker + " startOfWork" + dateStartTimeParsed;
+            document.getElementById(idName).className = classes + " selectedBy" + worker + " beginningOfWork" + dateStartTimeParsed;
             document.getElementById(workerId).innerHTML = '<span class="glyphicon glyphicon-user chosenTimeWorker' + worker + '"></span>';
           }
 
@@ -212,15 +216,15 @@ function getAllDataForForm($data) {
 
 function colorDiv($string, $id) {
   if ($string.toLowerCase() == "laser") {
-    document.getElementById($id).style.backgroundColor = "#80fbbc";
+    document.getElementById($id).style.backgroundColor = "#96f5e7";
   } else if ($string.toLowerCase() == "nõustamine") {
-    document.getElementById($id).style.backgroundColor = "#ff9279";
+    document.getElementById($id).style.backgroundColor = "#c5baef";
   } else if ($string.toLowerCase() == "massaaž") {
     document.getElementById($id).style.backgroundColor = "#80eafb";
   } else if ($string.toLowerCase() == "füsioteraapia") {
-    document.getElementById($id).style.backgroundColor = "#ffa7e0";
+    document.getElementById($id).style.backgroundColor = "#ff748f";
   } else if ($string.toLowerCase() == "kinesioteipimine") {
-    document.getElementById($id).style.backgroundColor = "#fbf280";
+    document.getElementById($id).style.backgroundColor = "#ffd893";
   }
 
 }
@@ -332,194 +336,15 @@ function emptyAllAddScheduleInputs() {
   document.getElementById("workType").value = "";
 }
 
-function addWorkSchedule($worker) {
-  var workHoursAddControl = [];
-  var workHoursRemoveControl = [];
-  var removeFromDB = [];
-
-  var mouseIsDown = false;
-  var hasClassOnEnter = false;
-  var innerHTML = document.getElementsByClassName("hour").innerHTML;
-  document.getElementsByClassName("hour").innerHTML = innerHTML + +'<div id="workerIcon"></div>';
-
-  $('.hour').on('mouseenter', function () {
-    if (mouseIsDown) {
-      var idName = $(this).attr('id');
-      var workerId = "worker" + idName;
-      var selection = "selectedBy" + $worker;
-      var timeAndDate = idName.split("|");
-      var datelist = [timeAndDate[1], timeAndDate[0]];
-      var thisClasses = this.className;
-      if (thisClasses.search('startOfWork') != -1) {
-        mouseIsDown = false;
-      } else {
-        if (hasClassOnEnter) {
-          if ($(this).hasClass(selection)) {
-            if (workHoursAddControl.includes(idName)) {
-              var index = getIdOfElementInArray(workHoursAddControl, idName);
-              workHoursAddControl.splice(index, 1);
-              document.getElementById(workerId).innerHTML = "";
-              $(this).removeClass(selection);
-            } else {
-              workHoursRemoveControl.push(idName);
-              document.getElementById(workerId).innerHTML = "";
-              $(this).removeClass(selection);
-
-            }
-            console.log("mous enter on selection");
-            console.log("ADD" + workHoursAddControl);
-            console.log("remove" + workHoursRemoveControl);
-          }
-        } else {
-          if (!$(this).hasClass(selection)) {
-            if (workHoursRemoveControl.includes(idName)) {
-              document.getElementById(workerId).innerHTML = '<span class="newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
-              $(this).addClass(selection);
-              var index = getIdOfElementInArray(workHoursRemoveControl, idName);
-              workHoursRemoveControl.splice(index, 1);
-
-            } else {
-              workHoursAddControl.push(idName);
-              document.getElementById(workerId).innerHTML = '<span class="newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
-              $(this).addClass(selection);
-            }
-            console.log("mous enter on  NOselection");
-            console.log("ADD" + workHoursAddControl);
-            console.log("remove" + workHoursRemoveControl);
-
-          }
-
-        }
-      }
-    }
-  });
-  $('.hour').on('mousedown', function () {
-
-    var idName = $(this).attr('id');
-    var timeAndDate = idName.split("|");
-    var workerId = "worker" + idName;
-    var selection = "selectedBy" + $worker;
-    var datelist = [timeAndDate[1], timeAndDate[0]];
-    //Kui on varem lisatud aeg
-    var thisClasses = this.className;
-    if (thisClasses.search('startOfWork') != -1) {
-      console.log("dbs olev aeg");
-      var classOfwork = this.classList[this.classList.length-1];
-      console.log(classOfwork);
-      $("."+classOfwork).css("background-color","#caaeae");
-    } else {
-      mouseIsDown = true;
-      if ($(this).hasClass(selection)) {
-        console.log(this.className);
-        hasClassOnEnter = true;
-        if (workHoursAddControl.includes(idName)) {
-          var index = getIdOfElementInArray(workHoursAddControl, idName);
-          workHoursAddControl.splice(index, 1);
-          document.getElementById(workerId).innerHTML = "";
-          $(this).removeClass(selection);
-        } else {
-          if (!workHoursRemoveControl.includes(idName)) {
-            workHoursRemoveControl.push(idName);
-            document.getElementById(workerId).innerHTML = "";
-            $(this).removeClass(selection);
-          }
-        }
-        console.log("mous down on selection");
-        console.log("ADD" + workHoursAddControl);
-        console.log("remove" + workHoursRemoveControl);
-      } else {
-        console.log(this.className);
-        hasClassOnEnter = false;
-        if (workHoursRemoveControl.includes(idName)) {
-          document.getElementById(workerId).innerHTML = '<span class=" newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
-          $(this).addClass(selection);
-          var index = getIdOfElementInArray(workHoursRemoveControl, idName);
-          workHoursRemoveControl.splice(index, 1);
-
-        } else {
-          workHoursAddControl.push(idName);
-          document.getElementById(workerId).innerHTML = '<span class=" newChosenTime glyphicon glyphicon-user chosenTimeWorker' + $worker + '"></span>';
-          $(this).addClass(selection);
-        }
-        console.log("mous down on  NOselection");
-        console.log("ADD" + workHoursAddControl);
-        console.log("remove" + workHoursRemoveControl);
-      }
-    }
-  }).on('mouseup', function () {
-    mouseIsDown = false;
-  });
 
 
 
-
-  $(".sendWorkWeek").click(function () {
-    $(".saveWorkWeek").slideUp();
-    console.log(workHoursAddControl);
-    //console.log(workHoursRemoveControl);
-    var selectedWorkScheduleIdAdd = listInListByDate(workHoursAddControl);
-
-    var selectedWorkScheduleIdRemoved = listInListByDate(workHoursRemoveControl);
-    console.log(selectedWorkScheduleIdAdd);
-    // console.log(selectedWorkScheduleIdRemoved)
-    var dataForSend = "";
-
-    selectedWorkScheduleIdAdd.sort();
-    for (n = 0; n < selectedWorkScheduleIdAdd.length; n++) {
-
-      var dayDate = selectedWorkScheduleIdAdd[n].shift();
-      var times = selectedWorkScheduleIdAdd[n].sort();
-      //console.log(times);
-      // console.log(dayDate);
-      dataForSend += dayDate + "," + times[0] + ",";
-      var startTime = "";
-      var endTime = "";
-      for (timeIndex = 0; timeIndex < times.length; timeIndex++) {
-
-        var currentTime = times[timeIndex];
-        //console.log(currentTime);
-        var nextTime = add15minToEndTime(currentTime);
-        // console.log(nextTime);
-
-        if (nextTime === times[timeIndex + 1]) {
-          //console.log("järgmine olemas");
-        } else {
-          //console.log("järgmist pole");
-          endTime = nextTime;
-          dataForSend += nextTime + "," + $worker + "--";
-
-          if (timeIndex === times.length - 1) {
-            //console.log("viimane element");
-          } else {
-            dataForSend += dayDate + "," + (times[timeIndex + 1]) + ",";
-            // console.log("veel üks aeg on sellel kuupäeval");
-          }
-        }
-
-      }
-
-    }
-    dataForSend = dataForSend.slice(0, -2);
-
-    console.log(dataForSend);
-    listOfData = dataForSend.split("--");
-    for (index = 0; index < listOfData.length; index++) {
-      $.ajax({
-        type: "POST",
-        url: "php/workerScheduleAddDb.php",
-        data: {
-          workerSchedule: listOfData[index]
-        },
-        success: function (response) {
-          console.log(response);
-        }
-
-      });
-    }
-    location.reload();
-  });
-
+function parseBackToDate($string) {
+  var date = $string.substring(0, 4) + "-" + $string.substring(4, 6) + "-" + $string.substring(6, 8);
+  var startTime = $string.substring(8, 10) + ":" + $string.substring(10, 12);
+  return startTime + "|" + date;
 }
+
 
 function listInListByDate($regularList) {
   selectedWorkScheduleIdAdd = [];
